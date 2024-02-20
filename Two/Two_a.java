@@ -2,40 +2,34 @@ package Two;
 
 public class Two_a {
 
-    public static int minMove(int[] machines) {
-        int totalclothes = 0;
-        int numOfMachine = machines.length; //machine ko length calculate  length of machine
+    public static int minMovesToEqualizeDresses(int[] sewingMachines) {
+        int totalDresses = 0;
+        int numMachines = sewingMachines.length;
 
-        // calculate number of length
-        for (int Clothes : machines) {
-            totalclothes += Clothes;
+        // Calculate the total number of dresses
+        for (int dresses : sewingMachines) {
+            totalDresses += dresses;
         }
 
-        // equally distribute 
-        if (totalclothes % numOfMachine != 0) {
-            return -1; 
+        // Verify whether the whole number of dresses can be divided equally across the machines.
+        if (totalDresses % numMachines != 0) {
+            return -1; // If the total number of garments cannot be distributed evenly, cannot equalize
         }
 
-        // how much clothes contain in a machine
-        int ClothesPerMachine = totalclothes / numOfMachine;
+        int averageDressesPerMachine = totalDresses / numMachines;
+        int moves = 0;
+        int cumulativeSum = 0;
 
-
-        int moves = 0; //inital  
-        for (int i = 0; i < numOfMachine - 1; i++) {
-            int diff = ClothesPerMachine - machines[i];
-            if (diff > 0) {
-                int shift = Math.min(diff, machines[i + 1]);//number of clothes update
-                machines[i] += shift;
-                machines[i + 1] -= shift;
-                
-                moves += shift;
-            }
+        for (int dresses : sewingMachines) {
+            cumulativeSum += dresses - averageDressesPerMachine;
+            moves = Math.max(moves, Math.abs(cumulativeSum));
         }
 
         return moves;
     }
+
     public static void main(String[] args) {
-        int[] input = { 1, 0, 5 };
-        System.out.println(minMove(input) + " is the kam number of move to shift clothes");
+        int[] sewingMachines = { 1,0,5};
+        System.out.println(minMovesToEqualizeDresses(sewingMachines));
     }
 }
